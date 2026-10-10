@@ -14,7 +14,7 @@
 | `middleware.js` | 코드를 넣지 않은 사람을 입장 화면으로 보냄 |
 | `api/login.js` · `api/logout.js` | 코드 확인, 입장 쿠키 발급·삭제 |
 | `api/db.js` | 기록 읽기·쓰기 (학생이면 걸러서) |
-| `lib/` | 쿠키 서명, 저장소 연결, 학생용 거르기 |
+| `api/health.js` | 설정 점검 (`/api/health`) |
 
 ## 처음 설치 (한 번만)
 

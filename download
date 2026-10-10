@@ -1,0 +1,5 @@
+node_modules
+.vercel
+.env*
+*.json.bak
+학급관리_백업_*.json

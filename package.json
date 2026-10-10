@@ -1,0 +1,6 @@
+{
+  "name": "jalwellclass",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" }
+}

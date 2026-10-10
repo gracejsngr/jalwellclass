@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>잘될거야 우리 반 · 입장</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F2F5F3;--surface:#FFFFFF;--ink:#0F2419;--muted:#5B6B62;--line:#DCE3DE;--soft:#EDF2EE;--primary:#0B6B45;--on-primary:#FFFFFF;--bad:#B5493B;color-scheme:light}
+@media (prefers-color-scheme: dark){:root{--bg:#0F1712;--surface:#16221B;--ink:#E7EFE9;--muted:#9DB0A5;--line:#29382F;--soft:#1C2A22;--primary:#3FBF86;--on-primary:#06150E;--bad:#F08A7C;color-scheme:dark}}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans KR",system-ui,sans-serif;display:grid;place-items:center;padding-inline:16px}
+.card{width:min(380px,100%);background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:32px 26px 26px;display:flex;flex-direction:column;gap:18px}
+.brand{display:flex;flex-direction:column;gap:2px}
+.brand small{color:var(--primary);font-weight:700;font-size:.85rem;letter-spacing:.04em}
+.brand h1{margin:0;font-family:"Do Hyeon","Noto Sans KR",sans-serif;font-weight:400;font-size:2.1rem;line-height:1.15}
+p{margin:0;color:var(--muted);font-size:.92rem;line-height:1.6}
+form{display:flex;flex-direction:column;gap:10px}
+label{font-size:.82rem;color:var(--muted);font-weight:600}
+input{width:100%;font:inherit;font-size:1.25rem;letter-spacing:.2em;text-align:center;padding:14px;border-radius:14px;border:1.5px solid var(--line);background:var(--soft);color:var(--ink)}
+input:focus{outline:none;border-color:var(--primary)}
+button{font:inherit;font-weight:700;font-size:1rem;padding:14px;border:0;border-radius:14px;background:var(--primary);color:var(--on-primary);cursor:pointer}
+button:disabled{opacity:.6;cursor:default}
+#msg{min-height:1.4em;color:var(--bad);font-size:.88rem;text-align:center}
+</style>
+</head>
+<body>
+<main class="card">
+  <div class="brand"><small>2026 · 3학년 5반</small><h1>잘될거야 우리 반</h1></div>
+  <p>선생님이 알려 준 입장 코드를 넣어 주세요. 한 번 들어오면 이 기기에서는 다시 묻지 않아요.</p>
+  <form id="f">
+    <label for="code">입장 코드</label>
+    <input id="code" name="code" type="password" autocomplete="off" inputmode="text" required>
+    <button id="go" type="submit">들어가기</button>
+    <div id="msg" role="status" aria-live="polite"></div>
+  </form>
+</main>
+<script>
+document.getElementById("f").addEventListener("submit", async e => {
+  e.preventDefault();
+  const b = document.getElementById("go"), m = document.getElementById("msg");
+  b.disabled = true; m.textContent = "";
+  try {
+    const r = await fetch("/api/login", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({code:document.getElementById("code").value})});
+    const j = await r.json().catch(() => ({}));
+    if(r.ok){ location.replace("/"); return; }
+    m.textContent = j.error || "들어가지 못했어요. 다시 해 주세요.";
+  } catch(err){ m.textContent = "인터넷 연결을 확인해 주세요."; }
+  b.disabled = false;
+});
+</script>
+</body>
+</html>

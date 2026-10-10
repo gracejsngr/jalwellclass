@@ -1034,6 +1034,8 @@ body.public.room-admin .top{box-shadow:inset 0 -3px 0 var(--energy)}
 (function(){
   var role = (document.cookie.match(/(?:^|;\s*)jw_role=(\w+)/) || [])[1] || "";
   if(role === "student"){ try{ localStorage.setItem("class-mgr:public", "1"); localStorage.removeItem("class-mgr:kiosk"); }catch(e){} }
+  if(role === "teacher"){ try{ if(localStorage.getItem("jw-was-student") === "1"){ localStorage.removeItem("class-mgr:public"); localStorage.removeItem("jw-was-student"); } }catch(e){} }
+  if(role === "student"){ try{ localStorage.setItem("jw-was-student", "1"); }catch(e){} }
   function api(method, url, body){
     return fetch(url, {method: method, credentials: "same-origin", headers: body ? {"Content-Type": "application/json"} : {}, body: body ? JSON.stringify(body) : undefined})
       .then(function(r){ if(r.status === 401){ location.href = "/login.html"; throw {code: "unauth"}; } if(!r.ok) throw {code: r.status === 413 ? "quota_exceeded" : "unavailable"}; return r.json(); });
